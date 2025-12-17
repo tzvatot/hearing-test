@@ -8,66 +8,74 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <!-- Language Selector -->
+    <div class="language-selector-container">
+        <select id="language-selector" class="language-selector" onchange="i18n.setLanguage(this.value)">
+            <option value="en">English</option>
+            <option value="he">עברית</option>
+        </select>
+    </div>
+
     <div class="container">
         <!-- Welcome Screen -->
         <div id="welcome-screen" class="screen active">
-            <h1>Online Hearing Test</h1>
-            <p class="subtitle">Free Self-Administered Audiometry</p>
+            <h1 data-i18n="app.title">Online Hearing Test</h1>
+            <p class="subtitle" data-i18n="app.subtitle">Free Self-Administered Audiometry</p>
 
             <div class="info-box warning">
-                <h3>⚠️ Important Disclaimer</h3>
-                <p>This is NOT a medical device and should not replace professional audiological evaluation.
+                <h3 data-i18n="welcome.disclaimer.title">⚠️ Important Disclaimer</h3>
+                <p data-i18n="welcome.disclaimer.text">This is NOT a medical device and should not replace professional audiological evaluation.
                    This tool is for educational and screening purposes only. Results are not calibrated to
                    clinical standards. Please consult a licensed audiologist for accurate hearing assessment.</p>
             </div>
 
             <div class="info-box">
-                <h3>Before You Start</h3>
+                <h3 data-i18n="welcome.before.title">Before You Start</h3>
                 <ul>
-                    <li>Use quality headphones or earbuds (not speakers)</li>
-                    <li>Find a quiet environment</li>
-                    <li>Set your system volume to about 50%</li>
-                    <li>Test takes approximately 10-15 minutes</li>
-                    <li>You'll hear tones at different frequencies and volumes</li>
-                    <li>Press the button or spacebar when you hear a sound</li>
+                    <li data-i18n="welcome.before.item1">Use quality headphones or earbuds (not speakers)</li>
+                    <li data-i18n="welcome.before.item2">Find a quiet environment</li>
+                    <li data-i18n="welcome.before.item3">Set your system volume to about 50%</li>
+                    <li data-i18n="welcome.before.item4">Test takes approximately 10-15 minutes</li>
+                    <li data-i18n="welcome.before.item5">You'll hear tones at different frequencies and volumes</li>
+                    <li data-i18n="welcome.before.item6">Press the button or spacebar when you hear a sound</li>
                 </ul>
             </div>
 
-            <button class="btn-primary" onclick="app.startCalibration()">Start Test</button>
+            <button class="btn-primary" onclick="app.startCalibration()" data-i18n="welcome.btn.start">Start Test</button>
         </div>
 
         <!-- Calibration Screen -->
         <div id="calibration-screen" class="screen">
-            <h2>Setup & Calibration</h2>
+            <h2 data-i18n="calibration.title">Setup & Calibration</h2>
 
             <div class="calibration-step" id="calibration-volume">
-                <h3>Step 1: Volume Check</h3>
-                <p>We'll play a reference tone. Adjust your system volume to a comfortable level -
+                <h3 data-i18n="calibration.volume.title">Step 1: Volume Check</h3>
+                <p data-i18n="calibration.volume.text">We'll play a reference tone. Adjust your system volume to a comfortable level -
                    loud enough to hear clearly but not uncomfortably loud.</p>
-                <button class="btn-secondary" onclick="app.playCalibrationTone()">Play Reference Tone (1000 Hz)</button>
-                <button class="btn-primary" onclick="app.nextCalibrationStep()">Volume is Good - Continue</button>
+                <button class="btn-secondary" onclick="app.playCalibrationTone()" data-i18n="calibration.volume.btn">Play Reference Tone (1000 Hz)</button>
+                <button class="btn-primary" onclick="app.nextCalibrationStep()" data-i18n="calibration.volume.continue">Volume is Good - Continue</button>
             </div>
 
             <div class="calibration-step hidden" id="calibration-headphones">
-                <h3>Step 2: Headphone Check</h3>
-                <p>Make sure your headphones are on correctly. We'll play sounds in each ear.</p>
+                <h3 data-i18n="calibration.headphones.title">Step 2: Headphone Check</h3>
+                <p data-i18n="calibration.headphones.text">Make sure your headphones are on correctly. We'll play sounds in each ear.</p>
                 <div class="headphone-test">
-                    <button class="btn-secondary" onclick="app.playTestTone('left')">Test Left Ear</button>
-                    <button class="btn-secondary" onclick="app.playTestTone('right')">Test Right Ear</button>
+                    <button class="btn-secondary" onclick="app.playTestTone('left')" data-i18n="calibration.headphones.left">Test Left Ear</button>
+                    <button class="btn-secondary" onclick="app.playTestTone('right')" data-i18n="calibration.headphones.right">Test Right Ear</button>
                 </div>
-                <p class="hint">You should hear the tone only in the specified ear.</p>
-                <button class="btn-primary" onclick="app.startTest()">Headphones Correct - Begin Test</button>
+                <p class="hint" data-i18n="calibration.headphones.hint">You should hear the tone only in the specified ear.</p>
+                <button class="btn-primary" onclick="app.startTest()" data-i18n="calibration.headphones.continue">Headphones Correct - Begin Test</button>
             </div>
         </div>
 
         <!-- Test Screen -->
         <div id="test-screen" class="screen">
             <div class="test-header">
-                <h2>Hearing Test in Progress</h2>
+                <h2 data-i18n="test.title">Hearing Test in Progress</h2>
                 <div class="progress-info">
                     <div class="current-info">
-                        <span class="ear-indicator">Testing: <strong id="current-ear">Right Ear</strong></span>
-                        <span class="freq-indicator">Frequency: <strong id="current-frequency">1000</strong> Hz</span>
+                        <span class="ear-indicator"><span data-i18n="test.testing">Testing</span>: <strong id="current-ear">Right Ear</strong></span>
+                        <span class="freq-indicator"><span data-i18n="test.frequency">Frequency</span>: <strong id="current-frequency">1000</strong> Hz</span>
                     </div>
                     <div class="progress-bar">
                         <div class="progress-fill" id="progress-fill"></div>
@@ -78,13 +86,13 @@
 
             <div class="test-content">
                 <div class="instruction">
-                    <p>Listen carefully. Press the button below (or press SPACEBAR) whenever you hear a tone.</p>
-                    <p class="hint">Even if the sound is very faint, press the button.</p>
+                    <p data-i18n="test.instruction.main">Listen carefully. Press the button below (or press SPACEBAR) whenever you hear a tone.</p>
+                    <p class="hint" data-i18n="test.instruction.hint">Even if the sound is very faint, press the button.</p>
                 </div>
 
                 <button class="btn-hear-it" id="hear-button">
-                    <span class="button-text">I Hear It</span>
-                    <span class="button-hint">or press SPACEBAR</span>
+                    <span class="button-text" data-i18n="test.btn.hear">I Hear It</span>
+                    <span class="button-hint" data-i18n="test.btn.hear.hint">or press SPACEBAR</span>
                 </button>
 
                 <div class="test-status" id="test-status">
@@ -92,64 +100,65 @@
                 </div>
 
                 <div class="skip-container">
-                    <button class="btn-skip" onclick="app.skipCurrentFrequency()">
+                    <button class="btn-skip" onclick="app.skipCurrentFrequency()" data-i18n="test.btn.skip">
                         Skip This Frequency
                     </button>
-                    <p class="hint">Use if you cannot hear the tone at all or want to skip this test</p>
+                    <p class="hint" data-i18n="test.skip.hint">Use if you cannot hear the tone at all or want to skip this test</p>
                 </div>
             </div>
         </div>
 
         <!-- Results Screen -->
         <div id="results-screen" class="screen">
-            <h2>Your Audiogram Results</h2>
+            <h2 data-i18n="results.title">Your Audiogram Results</h2>
 
             <div class="audiogram-container">
                 <canvas id="audiogram-chart" width="800" height="500"></canvas>
             </div>
 
             <div class="results-info">
-                <h3>Understanding Your Results</h3>
+                <h3 data-i18n="results.understanding">Understanding Your Results</h3>
                 <div class="legend">
                     <div class="legend-item">
                         <span class="legend-color" style="background: #e74c3c"></span>
-                        <span>Right Ear</span>
+                        <span data-i18n="results.legend.right">Right Ear</span>
                     </div>
                     <div class="legend-item">
                         <span class="legend-color" style="background: #3498db"></span>
-                        <span>Left Ear</span>
+                        <span data-i18n="results.legend.left">Left Ear</span>
                     </div>
                     <div class="legend-item">
                         <span class="legend-color" style="background: #95a5a6"></span>
-                        <span>Skipped Test</span>
+                        <span data-i18n="results.legend.skipped">Skipped Test</span>
                     </div>
                 </div>
                 <div class="interpretation">
-                    <h4>Hearing Level Classification:</h4>
+                    <h4 data-i18n="results.classification.title">Hearing Level Classification:</h4>
                     <ul>
-                        <li><strong>-10 to 25 dB:</strong> Normal hearing</li>
-                        <li><strong>26 to 40 dB:</strong> Mild hearing loss</li>
-                        <li><strong>41 to 55 dB:</strong> Moderate hearing loss</li>
-                        <li><strong>56 to 70 dB:</strong> Moderately severe hearing loss</li>
-                        <li><strong>71 to 90 dB:</strong> Severe hearing loss</li>
-                        <li><strong>91+ dB:</strong> Profound hearing loss</li>
+                        <li><strong>-10 to 25 dB:</strong> <span data-i18n="results.classification.normal">Normal hearing</span></li>
+                        <li><strong>26 to 40 dB:</strong> <span data-i18n="results.classification.mild">Mild hearing loss</span></li>
+                        <li><strong>41 to 55 dB:</strong> <span data-i18n="results.classification.moderate">Moderate hearing loss</span></li>
+                        <li><strong>56 to 70 dB:</strong> <span data-i18n="results.classification.modsevere">Moderately severe hearing loss</span></li>
+                        <li><strong>71 to 90 dB:</strong> <span data-i18n="results.classification.severe">Severe hearing loss</span></li>
+                        <li><strong>91+ dB:</strong> <span data-i18n="results.classification.profound">Profound hearing loss</span></li>
                     </ul>
                 </div>
                 <div class="info-box warning">
-                    <p><strong>Remember:</strong> This test is not calibrated to medical standards.
-                    If you have concerns about your hearing, please consult a licensed audiologist.</p>
+                    <p><strong data-i18n="results.reminder.title">Remember:</strong> <span data-i18n="results.reminder.text">This test is not calibrated to medical standards.
+                    If you have concerns about your hearing, please consult a licensed audiologist.</span></p>
                 </div>
             </div>
 
             <div class="results-actions">
-                <button class="btn-secondary" onclick="app.saveResults()">Save Results (PNG)</button>
-                <button class="btn-secondary" onclick="app.printResults()">Print</button>
-                <button class="btn-primary" onclick="app.restartTest()">Take Test Again</button>
+                <button class="btn-secondary" onclick="app.saveResults()" data-i18n="results.btn.save">Save Results (PNG)</button>
+                <button class="btn-secondary" onclick="app.printResults()" data-i18n="results.btn.print">Print</button>
+                <button class="btn-primary" onclick="app.restartTest()" data-i18n="results.btn.restart">Take Test Again</button>
             </div>
         </div>
     </div>
 
     <!-- Load JavaScript -->
+    <script src="js/i18n.js"></script>
     <script src="js/audio.js"></script>
     <script src="js/test.js"></script>
     <script src="js/audiogram.js"></script>

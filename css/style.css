@@ -414,3 +414,88 @@ h4 {
 .text-center {
     text-align: center;
 }
+
+/* Language Selector */
+.language-selector-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.language-selector {
+    padding: 8px 12px;
+    font-size: 14px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.9);
+    color: #2c3e50;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.language-selector:hover {
+    background: white;
+    border-color: rgba(102, 126, 234, 0.5);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.language-selector:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+/* RTL Support for Hebrew */
+body.rtl {
+    direction: rtl;
+}
+
+body.rtl .language-selector-container {
+    left: 20px;
+    right: auto;
+}
+
+body.rtl .container {
+    text-align: right;
+}
+
+body.rtl .btn-primary,
+body.rtl .btn-secondary,
+body.rtl .btn-skip {
+    text-align: center;
+}
+
+body.rtl ul,
+body.rtl ol {
+    padding-right: 20px;
+    padding-left: 0;
+}
+
+body.rtl .info-box ul {
+    margin-right: 20px;
+    margin-left: 0;
+}
+
+body.rtl .interpretation ul {
+    margin-right: 20px;
+    margin-left: 0;
+}
+
+body.rtl .current-info {
+    direction: rtl;
+}
+
+body.rtl .legend {
+    direction: rtl;
+}
+
+body.rtl .legend-item {
+    flex-direction: row-reverse;
+}
+
+/* Hebrew font support */
+body.rtl {
+    font-family: 'Segoe UI', 'Arial', 'Helvetica', sans-serif;
+}

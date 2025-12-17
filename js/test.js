@@ -137,12 +137,12 @@ class HearingTest {
         const progress = (completedTests / totalTests) * 100;
 
         this.elements.progressFill.style.width = progress + '%';
-        this.elements.progressText.textContent = Math.round(progress) + '% Complete';
+        this.elements.progressText.textContent = Math.round(progress) + '% ' + i18n.t('test.progress');
 
         const currentEar = this.ears[this.currentEarIndex];
         const currentFreq = this.frequencies[this.currentFrequencyIndex];
 
-        this.elements.currentEar.textContent = currentEar === 'right' ? 'Right Ear' : 'Left Ear';
+        this.elements.currentEar.textContent = currentEar === 'right' ? i18n.t('test.ear.right') : i18n.t('test.ear.left');
         this.elements.currentFrequency.textContent = currentFreq;
     }
 
@@ -159,7 +159,7 @@ class HearingTest {
 
         // Wait a random interval before first tone (1-3 seconds)
         const delay = 1000 + Math.random() * 2000;
-        setTimeout(() => {
+        this.toneTimeout = setTimeout(() => {
             this.presentTone();
         }, delay);
     }
@@ -170,7 +170,7 @@ class HearingTest {
         const currentFreq = this.frequencies[this.currentFrequencyIndex];
 
         this.isWaitingForResponse = true;
-        this.elements.testStatus.textContent = 'Listening... (press button if you hear a tone)';
+        this.elements.testStatus.textContent = i18n.t('test.status.listening');
         this.elements.hearButton.style.opacity = '1';
 
         // Play the tone
@@ -208,7 +208,7 @@ class HearingTest {
                 this.currentLevel = this.minLevel;
             }
 
-            this.elements.testStatus.textContent = 'Heard! Testing quieter...';
+            this.elements.testStatus.textContent = i18n.t('test.status.heard');
 
             // Track if this was an ascending trial (after a "not heard")
             if (this.ascendingRun) {
@@ -229,7 +229,7 @@ class HearingTest {
 
         } else {
             this.notHeardCount++;
-            this.elements.testStatus.textContent = 'Testing louder...';
+            this.elements.testStatus.textContent = i18n.t('test.status.louder');
 
             // When not heard, increase by 5 dB
             this.currentLevel += this.stepSizeUp;
@@ -247,7 +247,7 @@ class HearingTest {
 
         // Schedule next tone with random delay
         const delay = 1000 + Math.random() * 2000;
-        setTimeout(() => {
+        this.toneTimeout = setTimeout(() => {
             this.presentTone();
         }, delay);
     }
@@ -308,9 +308,9 @@ class HearingTest {
         console.log(`Threshold recorded: ${currentEar} ear, ${currentFreq} Hz = ${thresholdValue}${skipped ? '' : ' dB HL'}`);
 
         if (skipped) {
-            this.elements.testStatus.textContent = 'Frequency skipped. Moving to next...';
+            this.elements.testStatus.textContent = i18n.t('test.status.skipped');
         } else {
-            this.elements.testStatus.textContent = 'Threshold found! Moving to next frequency...';
+            this.elements.testStatus.textContent = i18n.t('test.status.threshold');
         }
 
         // Move to next frequency or ear
@@ -329,7 +329,7 @@ class HearingTest {
         }
 
         // Continue with next frequency
-        setTimeout(() => {
+        this.toneTimeout = setTimeout(() => {
             this.startFrequencyTest();
         }, 2000);
     }
@@ -343,6 +343,9 @@ class HearingTest {
         if (this.responseTimeout) {
             clearTimeout(this.responseTimeout);
         }
+        if (this.toneTimeout) {
+            clearTimeout(this.toneTimeout);
+        }
 
         // Reset waiting state
         this.isWaitingForResponse = false;
@@ -353,13 +356,35 @@ class HearingTest {
 
     // Complete the test and show results
     completeTest() {
-        this.elements.testStatus.textContent = 'Test complete!';
+        // Stop all audio and clear all timeouts
+        this.stopAllAudio();
+
+        this.elements.testStatus.textContent = i18n.t('test.status.complete');
         console.log('Test results:', this.results);
 
         // Wait a moment then show results
         setTimeout(() => {
             this.showResults();
         }, 1500);
+    }
+
+    // Stop all audio playback and clear all timeouts
+    stopAllAudio() {
+        // Stop any currently playing tone
+        audioGen.stopTone();
+
+        // Clear all pending timeouts
+        if (this.responseTimeout) {
+            clearTimeout(this.responseTimeout);
+            this.responseTimeout = null;
+        }
+        if (this.toneTimeout) {
+            clearTimeout(this.toneTimeout);
+            this.toneTimeout = null;
+        }
+
+        // Reset waiting state
+        this.isWaitingForResponse = false;
     }
 
     // Show results screen
@@ -384,6 +409,9 @@ class HearingTest {
 
     // Restart test
     restartTest() {
+        // Stop all audio first
+        this.stopAllAudio();
+
         this.currentEarIndex = 0;
         this.currentFrequencyIndex = 0;
         this.showScreen('welcome');

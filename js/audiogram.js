@@ -52,7 +52,7 @@ function drawAudiogram(results) {
     ctx.fillStyle = '#2c3e50';
     ctx.font = 'bold 20px sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText('Audiogram', width / 2, 25);
+    ctx.fillText(i18n.t('audiogram.title'), width / 2, 25);
 
     // Draw grid
     ctx.strokeStyle = '#ecf0f1';
@@ -116,7 +116,7 @@ function drawAudiogram(results) {
     ctx.rotate(-Math.PI / 2);
     ctx.textAlign = 'center';
     ctx.font = 'bold 14px sans-serif';
-    ctx.fillText('Hearing Level (dB HL)', 0, 0);
+    ctx.fillText(i18n.t('audiogram.ylabel'), 0, 0);
     ctx.restore();
 
     // X-axis labels (frequencies)
@@ -129,7 +129,7 @@ function drawAudiogram(results) {
 
     // X-axis title
     ctx.font = 'bold 14px sans-serif';
-    ctx.fillText('Frequency (Hz)', width / 2, height - 20);
+    ctx.fillText(i18n.t('audiogram.xlabel'), width / 2, height - 20);
 
     // Draw data points and lines
     const drawEarData = (earData, color, symbol) => {
@@ -197,7 +197,7 @@ function drawAudiogram(results) {
             const y = margin.top + chartHeight / 2; // Middle of chart
 
             // Draw "SKIP" text
-            ctx.fillText('SKIP', x, y);
+            ctx.fillText(i18n.t('audiogram.skip'), x, y);
 
             // Draw a small horizontal line through it
             ctx.beginPath();
