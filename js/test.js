@@ -47,6 +47,11 @@ class HearingTest {
             { freq: 4000, level: 50, ear: 'left' }
         ];
 
+        // Test selection state
+        this.selectedTestType = null; // 'puretone', 'speech', or 'both'
+        this.completedTests = []; // Track which tests have been completed
+        this.allResults = {}; // Store results from all tests
+
         // UI elements (will be initialized when DOM is ready)
         this.screens = {};
         this.elements = {};
@@ -65,6 +70,8 @@ class HearingTest {
             welcome: document.getElementById('welcome-screen'),
             calibration: document.getElementById('calibration-screen'),
             tutorial: document.getElementById('tutorial-screen'),
+            testSelection: document.getElementById('test-selection-screen'),
+            speechTest: document.getElementById('speech-test-screen'),
             test: document.getElementById('test-screen'),
             results: document.getElementById('results-screen')
         };
@@ -148,7 +155,16 @@ class HearingTest {
         audioGen.playHeadphoneTest(ear);
     }
 
-    // Tutorial methods
+    // Skip calibration and go directly to test selection
+    proceedAfterCalibration() {
+        // Stop any playing headphone test tone
+        audioGen.stopTone();
+
+        // Go to test selection instead of tutorial
+        this.showTestSelection();
+    }
+
+    // Tutorial methods (only for pure tone test)
     showTutorial() {
         // Stop any playing headphone test tone
         audioGen.stopTone();
@@ -233,6 +249,8 @@ class HearingTest {
     }
 
     finishTutorial() {
+        // Tutorial is only shown for pure tone or both
+        // Start the pure tone test
         this.startTest();
     }
 
@@ -242,7 +260,57 @@ class HearingTest {
         if (this.responseTimeout) {
             clearTimeout(this.responseTimeout);
         }
+        // Tutorial is only shown for pure tone or both
+        // Start the pure tone test
         this.startTest();
+    }
+
+    // Test selection methods
+    showTestSelection() {
+        this.showScreen('testSelection');
+    }
+
+    selectTestType(testType) {
+        this.selectedTestType = testType;
+        this.completedTests = [];
+        this.allResults = {};
+
+        if (testType === 'puretone' || testType === 'both') {
+            // Show tutorial for pure tone tests
+            this.showTutorial();
+        } else if (testType === 'speech') {
+            // Skip tutorial for speech-only test
+            this.startSpeechTest();
+        }
+    }
+
+    // Start speech recognition test
+    async startSpeechTest() {
+        this.showScreen('speechTest');
+
+        // Initialize speech test UI
+        speechTest.initUI();
+
+        // Get current language
+        const currentLang = i18n.currentLanguage;
+
+        // Start the speech test
+        await speechTest.startTest(currentLang);
+    }
+
+    // Show speech test results
+    showSpeechResults(results) {
+        this.allResults.speech = results;
+        this.completedTests.push('speech');
+
+        // Check if we need to do more tests
+        if (this.selectedTestType === 'both' && !this.completedTests.includes('puretone')) {
+            // Move to pure tone test
+            this.startTest();
+        } else {
+            // Show final results
+            this.showResults();
+        }
     }
 
     // Start the actual hearing test
@@ -492,9 +560,20 @@ class HearingTest {
         this.elements.testStatus.textContent = i18n.t('test.status.complete');
         console.log('Test results:', this.results);
 
-        // Wait a moment then show results
+        // Store pure tone results
+        this.allResults.puretone = this.results;
+        this.completedTests.push('puretone');
+
+        // Wait a moment then check next steps
         setTimeout(() => {
-            this.showResults();
+            // Check if we need to do speech test
+            if (this.selectedTestType === 'both' && !this.completedTests.includes('speech')) {
+                // Move to speech test
+                this.startSpeechTest();
+            } else {
+                // Show final results
+                this.showResults();
+            }
         }, 1500);
     }
 
@@ -520,7 +599,62 @@ class HearingTest {
     // Show results screen
     showResults() {
         this.showScreen('results');
-        drawAudiogram(this.results);
+
+        // Show/hide appropriate result sections
+        const puretoneSec = document.getElementById('puretone-results');
+        const speechSec = document.getElementById('speech-results');
+
+        if (this.allResults.puretone) {
+            if (puretoneSec) puretoneSec.classList.remove('hidden');
+            drawAudiogram(this.allResults.puretone);
+        } else {
+            if (puretoneSec) puretoneSec.classList.add('hidden');
+        }
+
+        if (this.allResults.speech) {
+            if (speechSec) speechSec.classList.remove('hidden');
+            this.displaySpeechResults(this.allResults.speech);
+        } else {
+            if (speechSec) speechSec.classList.add('hidden');
+        }
+    }
+
+    // Display speech test results
+    displaySpeechResults(results) {
+        const thresholdValue = document.getElementById('speech-threshold-value');
+        if (thresholdValue) {
+            const percentage = Math.round(results.threshold * 100);
+            thresholdValue.textContent = `${percentage}%`;
+        }
+
+        // Create simple performance chart
+        const chartContainer = document.getElementById('speech-performance-chart');
+        if (chartContainer && results.byVolume) {
+            let chartHTML = '<div class="speech-chart-title">' + i18n.t('results.speech.performance') + '</div>';
+            chartHTML += '<table class="speech-performance-table">';
+            chartHTML += '<thead><tr>';
+            chartHTML += '<th>' + i18n.t('results.speech.volume') + '</th>';
+            chartHTML += '<th>' + i18n.t('results.speech.correct') + '</th>';
+            chartHTML += '<th>' + i18n.t('results.speech.percentage') + '</th>';
+            chartHTML += '</tr></thead><tbody>';
+
+            const volumes = Object.keys(results.byVolume)
+                .map(Number)
+                .sort((a, b) => b - a);
+
+            volumes.forEach(volume => {
+                const data = results.byVolume[volume];
+                const percentage = Math.round((data.correct / data.total) * 100);
+                chartHTML += '<tr>';
+                chartHTML += `<td>${Math.round(volume * 100)}%</td>`;
+                chartHTML += `<td>${data.correct}/${data.total}</td>`;
+                chartHTML += `<td><div class="percentage-bar"><div class="percentage-fill" style="width: ${percentage}%"></div><span class="percentage-text">${percentage}%</span></div></td>`;
+                chartHTML += '</tr>';
+            });
+
+            chartHTML += '</tbody></table>';
+            chartContainer.innerHTML = chartHTML;
+        }
     }
 
     // Save results as image

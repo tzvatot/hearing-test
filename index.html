@@ -64,7 +64,7 @@
                     <button class="btn-secondary" onclick="app.playTestTone('right')" data-i18n="calibration.headphones.right">Test Right Ear</button>
                 </div>
                 <p class="hint" data-i18n="calibration.headphones.hint">You should hear the tone only in the specified ear.</p>
-                <button class="btn-primary" onclick="app.showTutorial()" data-i18n="calibration.headphones.continue">Headphones Correct - Continue</button>
+                <button class="btn-primary" onclick="app.proceedAfterCalibration()" data-i18n="calibration.headphones.continue">Headphones Correct - Continue</button>
             </div>
         </div>
 
@@ -119,6 +119,93 @@
             </div>
         </div>
 
+        <!-- Test Selection Screen -->
+        <div id="test-selection-screen" class="screen">
+            <h2 data-i18n="testselection.title">Choose Your Test Type</h2>
+            <p class="subtitle" data-i18n="testselection.subtitle">Select which type of hearing assessment you'd like to complete</p>
+
+            <div class="test-type-cards">
+                <div class="test-card">
+                    <div class="test-card-icon">🎵</div>
+                    <h3 data-i18n="testselection.puretone.title">Pure Tone Test</h3>
+                    <p data-i18n="testselection.puretone.desc">Tests your ability to hear different frequencies and volumes. Creates an audiogram chart.</p>
+                    <ul class="test-card-features">
+                        <li data-i18n="testselection.puretone.feature1">10-15 minutes</li>
+                        <li data-i18n="testselection.puretone.feature2">Standard audiometry</li>
+                        <li data-i18n="testselection.puretone.feature3">8 frequencies tested</li>
+                    </ul>
+                    <button class="btn-primary" onclick="app.selectTestType('puretone')" data-i18n="testselection.puretone.btn">Start Pure Tone Test</button>
+                </div>
+
+                <div class="test-card">
+                    <div class="test-card-icon">💬</div>
+                    <h3 data-i18n="testselection.speech.title">Speech Recognition Test</h3>
+                    <p data-i18n="testselection.speech.desc">Tests your ability to understand spoken words at different volumes. More practical for everyday hearing.</p>
+                    <ul class="test-card-features">
+                        <li data-i18n="testselection.speech.feature1">5-8 minutes</li>
+                        <li data-i18n="testselection.speech.feature2">Real-world relevance</li>
+                        <li data-i18n="testselection.speech.feature3">Word recognition</li>
+                    </ul>
+                    <button class="btn-primary" onclick="app.selectTestType('speech')" data-i18n="testselection.speech.btn">Start Speech Test</button>
+                </div>
+
+                <div class="test-card test-card-recommended">
+                    <div class="test-card-badge" data-i18n="testselection.both.badge">Recommended</div>
+                    <div class="test-card-icon">🎵💬</div>
+                    <h3 data-i18n="testselection.both.title">Complete Assessment</h3>
+                    <p data-i18n="testselection.both.desc">Both pure tone and speech tests for comprehensive hearing evaluation.</p>
+                    <ul class="test-card-features">
+                        <li data-i18n="testselection.both.feature1">15-20 minutes</li>
+                        <li data-i18n="testselection.both.feature2">Most comprehensive</li>
+                        <li data-i18n="testselection.both.feature3">Clinical standard</li>
+                    </ul>
+                    <button class="btn-primary" onclick="app.selectTestType('both')" data-i18n="testselection.both.btn">Start Complete Test</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Speech Test Screen -->
+        <div id="speech-test-screen" class="screen">
+            <div class="test-header">
+                <h2 data-i18n="speech.title">Speech Recognition Test</h2>
+                <div class="progress-info">
+                    <div class="current-info">
+                        <span class="volume-indicator"><span data-i18n="speech.volume">Volume</span>: <strong id="speech-volume-indicator">100%</strong></span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="speech-progress-fill"></div>
+                    </div>
+                    <div class="progress-text" id="speech-progress-text">0% Complete</div>
+                </div>
+            </div>
+
+            <div class="speech-test-content">
+                <div class="instruction" id="speech-instruction">
+                    <p data-i18n="speech.instruction">Listen to the spoken word, then select which word you heard from the options below.</p>
+                </div>
+
+                <div class="speech-word-display" id="speech-word-display">
+                    <div class="listening-indicator">
+                        <span data-i18n="speech.listening">🔊 Listening...</span>
+                    </div>
+                </div>
+
+                <div class="speech-options">
+                    <button class="btn-speech-option" id="speech-option-1">Word 1</button>
+                    <button class="btn-speech-option" id="speech-option-2">Word 2</button>
+                    <button class="btn-speech-option" id="speech-option-3">Word 3</button>
+                    <button class="btn-speech-option" id="speech-option-4">Word 4</button>
+                </div>
+
+                <div class="speech-replay">
+                    <button class="btn-secondary" onclick="speechTest.replayWord()" data-i18n="speech.btn.replay">
+                        🔁 Replay Word
+                    </button>
+                    <p class="hint" data-i18n="speech.replay.hint">Click to hear the word again</p>
+                </div>
+            </div>
+        </div>
+
         <!-- Test Screen -->
         <div id="test-screen" class="screen">
             <div class="test-header">
@@ -161,10 +248,29 @@
 
         <!-- Results Screen -->
         <div id="results-screen" class="screen">
-            <h2 data-i18n="results.title">Your Audiogram Results</h2>
+            <h2 data-i18n="results.title">Your Test Results</h2>
 
-            <div class="audiogram-container">
-                <canvas id="audiogram-chart" width="800" height="500"></canvas>
+            <!-- Pure Tone Results -->
+            <div id="puretone-results" class="results-section">
+                <h3 data-i18n="results.puretone.title">Pure Tone Audiogram</h3>
+                <div class="audiogram-container">
+                    <canvas id="audiogram-chart" width="800" height="500"></canvas>
+                </div>
+            </div>
+
+            <!-- Speech Test Results -->
+            <div id="speech-results" class="results-section hidden">
+                <h3 data-i18n="results.speech.title">Speech Recognition Results</h3>
+                <div class="speech-results-container">
+                    <div class="speech-threshold-card">
+                        <div class="speech-threshold-label" data-i18n="results.speech.threshold">Speech Recognition Threshold:</div>
+                        <div class="speech-threshold-value" id="speech-threshold-value">80%</div>
+                        <p class="speech-threshold-desc" data-i18n="results.speech.threshold.desc">Volume level at which you correctly identified 50% of words</p>
+                    </div>
+                    <div class="speech-performance-chart" id="speech-performance-chart">
+                        <!-- Chart will be drawn here -->
+                    </div>
+                </div>
             </div>
 
             <div class="results-info">
@@ -211,6 +317,7 @@
     <!-- Load JavaScript -->
     <script src="js/i18n.js"></script>
     <script src="js/audio.js"></script>
+    <script src="js/speech.js"></script>
     <script src="js/test.js"></script>
     <script src="js/audiogram.js"></script>
 </body>
