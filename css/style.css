@@ -265,12 +265,14 @@ h4 {
 
 .btn-hear-it .button-text {
     font-size: 2rem;
+    display: block;
 }
 
 .btn-hear-it .button-hint {
     font-size: 0.9rem;
     margin-top: 10px;
     opacity: 0.8;
+    display: block;
 }
 
 .test-status {
@@ -364,6 +366,106 @@ h4 {
 .results-actions {
     text-align: center;
     margin-top: 30px;
+}
+
+/* Tutorial Screen */
+.tutorial-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.tutorial-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+    color: white;
+    padding: 10px 25px;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 15px;
+    box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.tutorial-content {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.tutorial-practice {
+    background: #f8f9fa;
+    padding: 30px;
+    border-radius: 15px;
+    margin: 30px 0;
+    text-align: center;
+}
+
+.tutorial-practice h3 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 15px;
+}
+
+.tutorial-practice p {
+    text-align: center;
+    color: #7f8c8d;
+    margin-bottom: 25px;
+}
+
+.tutorial-practice #start-tutorial-btn {
+    margin: 20px auto 30px;
+    display: block;
+}
+
+#tutorial-button {
+    margin: 20px auto;
+    display: block;
+}
+
+.tutorial-status {
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: #2c3e50;
+    font-weight: 500;
+    margin: 20px 0;
+    padding: 15px;
+    background: white;
+    border-radius: 10px;
+    border: 2px solid #ecf0f1;
+}
+
+.tutorial-progress {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #7f8c8d;
+    margin-top: 15px;
+}
+
+.tutorial-progress strong {
+    color: #3498db;
+    font-size: 1.3rem;
+}
+
+#finish-tutorial-btn {
+    margin: 30px auto 20px;
+    display: block;
+}
+
+.tutorial-content .hint {
+    text-align: center;
+    margin-top: 40px;
 }
 
 /* Responsive Design */

@@ -36,6 +36,17 @@ class HearingTest {
         this.heardCount = 0;
         this.notHeardCount = 0;
 
+        // Tutorial state
+        this.isTutorialMode = false;
+        this.tutorialTonesCompleted = 0;
+        this.tutorialTotalTones = 4;
+        this.tutorialTones = [
+            { freq: 1000, level: 50, ear: 'right' },
+            { freq: 2000, level: 45, ear: 'left' },
+            { freq: 500, level: 40, ear: 'right' },
+            { freq: 4000, level: 50, ear: 'left' }
+        ];
+
         // UI elements (will be initialized when DOM is ready)
         this.screens = {};
         this.elements = {};
@@ -53,6 +64,7 @@ class HearingTest {
         this.screens = {
             welcome: document.getElementById('welcome-screen'),
             calibration: document.getElementById('calibration-screen'),
+            tutorial: document.getElementById('tutorial-screen'),
             test: document.getElementById('test-screen'),
             results: document.getElementById('results-screen')
         };
@@ -64,22 +76,40 @@ class HearingTest {
             progressFill: document.getElementById('progress-fill'),
             progressText: document.getElementById('progress-text'),
             testStatus: document.getElementById('test-status'),
-            hearButton: document.getElementById('hear-button')
+            hearButton: document.getElementById('hear-button'),
+            tutorialButton: document.getElementById('tutorial-button'),
+            tutorialStatus: document.getElementById('tutorial-status'),
+            tutorialCounter: document.getElementById('tutorial-counter'),
+            startTutorialBtn: document.getElementById('start-tutorial-btn'),
+            finishTutorialBtn: document.getElementById('finish-tutorial-btn')
         };
 
         // Add keyboard listener for spacebar
         document.addEventListener('keydown', (e) => {
             if (e.code === 'Space' && this.isWaitingForResponse) {
                 e.preventDefault();
-                this.handleResponse(true);
+                if (this.isTutorialMode) {
+                    this.handleTutorialResponse();
+                } else {
+                    this.handleResponse(true);
+                }
             }
         });
 
-        // Add click listener for hear button
+        // Add click listener for hear button (test mode)
         if (this.elements.hearButton) {
             this.elements.hearButton.addEventListener('click', () => {
-                if (this.isWaitingForResponse) {
+                if (this.isWaitingForResponse && !this.isTutorialMode) {
                     this.handleResponse(true);
+                }
+            });
+        }
+
+        // Add click listener for tutorial button
+        if (this.elements.tutorialButton) {
+            this.elements.tutorialButton.addEventListener('click', () => {
+                if (this.isWaitingForResponse && this.isTutorialMode) {
+                    this.handleTutorialResponse();
                 }
             });
         }
@@ -113,6 +143,100 @@ class HearingTest {
 
     playTestTone(ear) {
         audioGen.playHeadphoneTest(ear);
+    }
+
+    // Tutorial methods
+    showTutorial() {
+        this.showScreen('tutorial');
+        this.tutorialTonesCompleted = 0;
+        this.isTutorialMode = false;
+        this.updateTutorialUI();
+    }
+
+    startTutorial() {
+        this.isTutorialMode = true;
+        this.tutorialTonesCompleted = 0;
+        this.elements.startTutorialBtn.classList.add('hidden');
+        this.elements.tutorialButton.style.opacity = '1';
+        this.updateTutorialUI();
+
+        // Start first practice tone after a short delay
+        setTimeout(() => {
+            this.playNextTutorialTone();
+        }, 1500);
+    }
+
+    playNextTutorialTone() {
+        if (this.tutorialTonesCompleted >= this.tutorialTotalTones) {
+            this.completeTutorial();
+            return;
+        }
+
+        const currentTone = this.tutorialTones[this.tutorialTonesCompleted];
+        this.isWaitingForResponse = true;
+        this.elements.tutorialStatus.textContent = i18n.t('tutorial.status.listen');
+        this.elements.tutorialButton.style.opacity = '1';
+
+        // Play the tone
+        audioGen.playTone(currentTone.freq, currentTone.level, currentTone.ear, 1.5);
+
+        // Auto-advance if no response after 4 seconds (tone is 1.5s + 2.5s wait)
+        this.responseTimeout = setTimeout(() => {
+            if (this.isWaitingForResponse) {
+                this.handleTutorialResponse(false);
+            }
+        }, 4000);
+    }
+
+    handleTutorialResponse(heard = true) {
+        if (!this.isWaitingForResponse || !this.isTutorialMode) return;
+
+        this.isWaitingForResponse = false;
+        clearTimeout(this.responseTimeout);
+
+        this.elements.tutorialButton.style.opacity = '0.7';
+
+        if (heard) {
+            this.tutorialTonesCompleted++;
+            this.elements.tutorialStatus.textContent = i18n.t('tutorial.status.correct');
+        } else {
+            this.tutorialTonesCompleted++;
+            this.elements.tutorialStatus.textContent = i18n.t('tutorial.status.noresponse');
+        }
+
+        this.updateTutorialUI();
+
+        // Wait a moment then play next tone
+        setTimeout(() => {
+            this.playNextTutorialTone();
+        }, 1500);
+    }
+
+    updateTutorialUI() {
+        if (this.elements.tutorialCounter) {
+            this.elements.tutorialCounter.textContent = `${this.tutorialTonesCompleted} / ${this.tutorialTotalTones}`;
+        }
+    }
+
+    completeTutorial() {
+        this.isTutorialMode = false;
+        this.isWaitingForResponse = false;
+        this.elements.tutorialStatus.textContent = i18n.t('tutorial.status.complete');
+        this.elements.tutorialButton.style.opacity = '0.5';
+        this.elements.finishTutorialBtn.classList.remove('hidden');
+    }
+
+    finishTutorial() {
+        this.startTest();
+    }
+
+    skipTutorial() {
+        this.isTutorialMode = false;
+        this.isWaitingForResponse = false;
+        if (this.responseTimeout) {
+            clearTimeout(this.responseTimeout);
+        }
+        this.startTest();
     }
 
     // Start the actual hearing test

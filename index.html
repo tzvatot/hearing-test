@@ -64,7 +64,58 @@
                     <button class="btn-secondary" onclick="app.playTestTone('right')" data-i18n="calibration.headphones.right">Test Right Ear</button>
                 </div>
                 <p class="hint" data-i18n="calibration.headphones.hint">You should hear the tone only in the specified ear.</p>
-                <button class="btn-primary" onclick="app.startTest()" data-i18n="calibration.headphones.continue">Headphones Correct - Begin Test</button>
+                <button class="btn-primary" onclick="app.showTutorial()" data-i18n="calibration.headphones.continue">Headphones Correct - Continue</button>
+            </div>
+        </div>
+
+        <!-- Tutorial Screen -->
+        <div id="tutorial-screen" class="screen">
+            <div class="tutorial-header">
+                <h2 data-i18n="tutorial.title">Practice Tutorial</h2>
+                <div class="tutorial-badge" data-i18n="tutorial.badge">This is NOT the real test - just practice!</div>
+            </div>
+
+            <div class="tutorial-content">
+                <div class="info-box">
+                    <h3 data-i18n="tutorial.how.title">How It Works:</h3>
+                    <ul>
+                        <li data-i18n="tutorial.how.item1">You will hear tones at different volumes and frequencies</li>
+                        <li data-i18n="tutorial.how.item2">Press the button below (or SPACEBAR) immediately when you hear a sound</li>
+                        <li data-i18n="tutorial.how.item3">Even very faint sounds - if you hear it, press the button</li>
+                        <li data-i18n="tutorial.how.item4">If you don't hear anything, just wait - a new tone will play automatically</li>
+                    </ul>
+                </div>
+
+                <div class="tutorial-practice">
+                    <h3 data-i18n="tutorial.practice.title">Let's Practice:</h3>
+                    <p data-i18n="tutorial.practice.text">We'll play a few practice tones. Press the button when you hear them.</p>
+
+                    <button class="btn-primary" id="start-tutorial-btn" onclick="app.startTutorial()" data-i18n="tutorial.btn.start">
+                        Start Practice
+                    </button>
+
+                    <button class="btn-hear-it" id="tutorial-button">
+                        <span class="button-text" data-i18n="tutorial.btn.hear">I Hear It</span>
+                        <span class="button-hint" data-i18n="tutorial.btn.hear.hint">or press SPACEBAR</span>
+                    </button>
+
+                    <div class="tutorial-status" id="tutorial-status">
+                        <span data-i18n="tutorial.status.ready">Ready to start practice</span>
+                    </div>
+
+                    <div class="tutorial-progress">
+                        <span id="tutorial-progress-text">Practice tones: <strong id="tutorial-counter">0 / 4</strong></span>
+                    </div>
+                </div>
+
+                <button class="btn-primary hidden" id="finish-tutorial-btn" onclick="app.finishTutorial()" data-i18n="tutorial.btn.finish">
+                    I'm Ready - Begin Real Test
+                </button>
+
+                <div class="hint">
+                    <p data-i18n="tutorial.hint">Don't worry - you can skip this tutorial if you've done it before</p>
+                    <button class="btn-skip" onclick="app.skipTutorial()" data-i18n="tutorial.btn.skip">Skip Tutorial</button>
+                </div>
             </div>
         </div>
 
