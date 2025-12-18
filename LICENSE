@@ -1,16 +1,40 @@
-MIT License
+DUAL LICENSE
 
 Copyright (c) 2025 Hearing Test Contributors
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+This software is available under a dual license model:
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+1. NON-COMMERCIAL LICENSE (Free)
+   For personal, educational, academic, and non-profit use
+
+2. COMMERCIAL LICENSE (Paid)
+   Required for any commercial distribution, resale, or integration into
+   commercial products or services
+
+================================================================================
+
+NON-COMMERCIAL LICENSE
+
+Permission is hereby granted, free of charge, to any person or organization
+obtaining a copy of this software and associated documentation files (the
+"Software"), to use, copy, and modify the Software for NON-COMMERCIAL purposes
+only, subject to the following conditions:
+
+1. The Software may be used freely for:
+   - Personal use
+   - Educational purposes
+   - Academic research
+   - Non-profit organizations
+   - Internal business use (not for resale or redistribution)
+
+2. PROHIBITED without a Commercial License:
+   - Selling, licensing, or distributing the Software or derivatives
+   - Including the Software in a commercial product or service
+   - Using the Software to provide paid services
+   - Redistributing the Software for profit
+
+3. The above copyright notice and this permission notice shall be included in
+   all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -20,7 +44,24 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-MEDICAL DISCLAIMER:
+================================================================================
+
+COMMERCIAL LICENSE
+
+For commercial use, distribution, resale, or integration into commercial
+products or services, you must obtain a separate commercial license.
+
+To inquire about commercial licensing, please contact the project owner.
+
+Commercial licensing includes:
+- Right to distribute and sell the Software
+- Right to integrate into commercial products
+- Right to provide paid services using the Software
+- Commercial support options (optional)
+
+================================================================================
+
+MEDICAL DISCLAIMER
 
 This software is NOT a medical device and is not intended for medical diagnosis.
 This tool is for educational and screening purposes only. Results are not

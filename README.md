@@ -2,7 +2,7 @@
 
 A free, open-source web-based audiometry tool for self-administered hearing tests. This application uses the Web Audio API to generate pure tones at standard audiometric frequencies and implements the Hughson-Westlake procedure for threshold detection.
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![License](https://img.shields.io/badge/license-Dual%20License-blue.svg)
 
 ## ⚠️ Important Disclaimer
 
@@ -24,7 +24,7 @@ A free, open-source web-based audiometry tool for self-administered hearing test
 - ✅ No installation required - runs in modern web browsers
 - ✅ No data collection - everything runs locally
 - ✅ Mobile and desktop compatible
-- ✅ Completely free and open source
+- ✅ Free for personal, educational, and non-commercial use
 
 ## How It Works
 
@@ -115,7 +115,7 @@ hearing-test/
 │   ├── test.js        # Test flow and Hughson-Westlake logic
 │   └── audiogram.js   # Canvas-based audiogram chart
 ├── README.md          # This file
-└── LICENSE            # MIT License
+└── LICENSE            # Dual License (Non-Commercial/Commercial)
 ```
 
 ## Technical Details
@@ -191,7 +191,29 @@ To contribute code:
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is available under a **dual license model**:
+
+### Non-Commercial License (Free)
+
+Free to use for:
+- Personal use
+- Educational and academic purposes
+- Non-profit organizations
+- Internal business use (not for resale or redistribution)
+
+You can use, copy, and modify the software for these purposes at no cost.
+
+### Commercial License (Paid)
+
+A commercial license is required if you want to:
+- Sell or distribute the software or derivatives
+- Include it in a commercial product or service
+- Provide paid services using this software
+- Redistribute for profit
+
+**To obtain a commercial license, please contact the project owner.**
+
+See the LICENSE file for complete terms and conditions.
 
 ## Acknowledgments
 
