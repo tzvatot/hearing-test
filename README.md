@@ -4,6 +4,8 @@ A free, open-source web-based audiometry tool for comprehensive self-administere
 
 ![License](https://img.shields.io/badge/license-Dual%20License-blue.svg)
 
+**🌐 [Try it now - Live Demo](https://tzvatot.github.io/hearing-test)**
+
 ## ⚠️ Important Disclaimer
 
 **This is NOT a medical device and should not replace professional audiological evaluation.**
@@ -33,7 +35,7 @@ A free, open-source web-based audiometry tool for comprehensive self-administere
 - ✅ Available in English (uses Web Speech Synthesis)
 
 ### General Features
-- ✅ Practice tutorial mode to learn the test procedure
+- ✅ Practice tutorial mode for pure tone test (learn button pressing and timing)
 - ✅ Choose between Pure Tone, Speech, or Complete Assessment
 - ✅ Export results as PNG image
 - ✅ No installation required - runs in modern web browsers
@@ -47,8 +49,8 @@ A free, open-source web-based audiometry tool for comprehensive self-administere
 ### Testing Procedure
 
 1. **Setup**: Calibrate your volume and verify headphone placement
-2. **Tutorial**: Practice with the test interface (optional, can skip)
-3. **Test Selection**: Choose Pure Tone, Speech, or Complete Assessment
+2. **Test Selection**: Choose Pure Tone, Speech, or Complete Assessment
+3. **Tutorial** (Pure Tone tests only): Practice with button pressing and timing (optional, can skip)
 4. **Testing**: Complete your selected test(s)
 5. **Results**: View comprehensive results with audiogram and/or speech performance
 
