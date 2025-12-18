@@ -137,14 +137,53 @@ class AudioGenerator {
      * Stop currently playing tone
      */
     stopTone() {
-        if (this.oscillator && this.isPlaying) {
-            try {
-                this.oscillator.stop();
-                this.oscillator.disconnect();
-                this.isPlaying = false;
-            } catch (error) {
-                // Ignore errors if already stopped
+        try {
+            const now = this.audioContext ? this.audioContext.currentTime : 0;
+
+            // Cancel any scheduled gain changes and silence immediately
+            if (this.gainNode) {
+                this.gainNode.gain.cancelScheduledValues(now);
+                this.gainNode.gain.setValueAtTime(0, now);
             }
+
+            // Disconnect and stop the oscillator
+            if (this.oscillator) {
+                try {
+                    this.oscillator.stop(now);
+                } catch (e) {
+                    // Oscillator might already be stopped, ignore
+                }
+                try {
+                    this.oscillator.disconnect();
+                } catch (e) {
+                    // Already disconnected, ignore
+                }
+                this.oscillator = null;
+            }
+
+            // Disconnect other nodes
+            if (this.gainNode) {
+                try {
+                    this.gainNode.disconnect();
+                } catch (e) {
+                    // Already disconnected, ignore
+                }
+                this.gainNode = null;
+            }
+
+            if (this.stereoPanner) {
+                try {
+                    this.stereoPanner.disconnect();
+                } catch (e) {
+                    // Already disconnected, ignore
+                }
+                this.stereoPanner = null;
+            }
+
+            this.isPlaying = false;
+        } catch (error) {
+            console.error('Error stopping tone:', error);
+            this.isPlaying = false;
         }
     }
 

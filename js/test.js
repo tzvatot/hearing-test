@@ -137,6 +137,9 @@ class HearingTest {
     }
 
     nextCalibrationStep() {
+        // Stop any playing calibration tone
+        audioGen.stopTone();
+
         document.getElementById('calibration-volume').classList.add('hidden');
         document.getElementById('calibration-headphones').classList.remove('hidden');
     }
@@ -147,6 +150,9 @@ class HearingTest {
 
     // Tutorial methods
     showTutorial() {
+        // Stop any playing headphone test tone
+        audioGen.stopTone();
+
         this.showScreen('tutorial');
         this.tutorialTonesCompleted = 0;
         this.isTutorialMode = false;
