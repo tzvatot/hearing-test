@@ -1,6 +1,6 @@
 # Online Hearing Test
 
-A free, open-source web-based audiometry tool for self-administered hearing tests. This application uses the Web Audio API to generate pure tones at standard audiometric frequencies and implements the Hughson-Westlake procedure for threshold detection.
+A free, open-source web-based audiometry tool for comprehensive self-administered hearing tests. This application offers both **Pure Tone Audiometry** and **Speech Recognition Testing** to evaluate your hearing from multiple perspectives.
 
 ![License](https://img.shields.io/badge/license-Dual%20License-blue.svg)
 
@@ -16,14 +16,30 @@ A free, open-source web-based audiometry tool for self-administered hearing test
 
 ## Features
 
+### Two Types of Hearing Tests
+
+**Pure Tone Audiometry**
 - ✅ Standard audiometric frequencies: 250, 500, 1000, 2000, 3000, 4000, 6000, 8000 Hz
 - ✅ Hughson-Westlake threshold detection method
 - ✅ Separate left and right ear testing
 - ✅ Visual audiogram chart generation
+- ✅ Available in English and Hebrew
+
+**Speech Recognition Testing**
+- ✅ Word recognition at multiple volume levels
+- ✅ 40-word vocabulary with multiple choice format
+- ✅ Speech Recognition Threshold (SRT) calculation
+- ✅ Real-world hearing ability assessment
+- ✅ Available in English (uses Web Speech Synthesis)
+
+### General Features
+- ✅ Practice tutorial mode to learn the test procedure
+- ✅ Choose between Pure Tone, Speech, or Complete Assessment
 - ✅ Export results as PNG image
 - ✅ No installation required - runs in modern web browsers
 - ✅ No data collection - everything runs locally
 - ✅ Mobile and desktop compatible
+- ✅ Bilingual support (English/Hebrew)
 - ✅ Free for personal, educational, and non-commercial use
 
 ## How It Works
@@ -31,11 +47,12 @@ A free, open-source web-based audiometry tool for self-administered hearing test
 ### Testing Procedure
 
 1. **Setup**: Calibrate your volume and verify headphone placement
-2. **Testing**: Listen for tones at various frequencies and volumes
-3. **Response**: Press spacebar or click button when you hear a sound
-4. **Results**: View your audiogram showing hearing thresholds
+2. **Tutorial**: Practice with the test interface (optional, can skip)
+3. **Test Selection**: Choose Pure Tone, Speech, or Complete Assessment
+4. **Testing**: Complete your selected test(s)
+5. **Results**: View comprehensive results with audiogram and/or speech performance
 
-### Hughson-Westlake Method
+### Pure Tone Test - Hughson-Westlake Method
 
 This application implements the standard clinical threshold detection procedure:
 
@@ -43,6 +60,15 @@ This application implements the standard clinical threshold detection procedure:
 2. When tone is heard, decrease by 10 dB
 3. When tone is not heard, increase by 5 dB
 4. Threshold = quietest level where tone is heard in 2 out of 3 ascending trials
+5. Tests 8 frequencies in both ears (16 measurements total)
+
+### Speech Recognition Test
+
+1. Listen to spoken words at decreasing volume levels
+2. Select the word you heard from 4 multiple-choice options
+3. Tests 5 words at each of 8 volume levels (40 words total)
+4. Calculates Speech Recognition Threshold (50% accuracy point)
+5. Shows performance chart across all volume levels
 
 ## Requirements
 
@@ -51,10 +77,14 @@ This application implements the standard clinical threshold detection procedure:
 - **Headphones**: Quality headphones or earbuds (not speakers)
 - **Environment**: Quiet room with minimal background noise
 - **Browser**: Modern browser with Web Audio API support:
-  - Chrome 35+
+  - Chrome 35+ (recommended for speech test)
   - Firefox 25+
   - Safari 14.1+
   - Edge 79+
+- **For Speech Test**:
+  - English language support only (uses browser text-to-speech)
+  - Chrome/Edge recommended for best voice quality
+  - System must have English TTS voices (usually pre-installed)
 
 ### Volume Settings
 
@@ -112,20 +142,32 @@ hearing-test/
 │   └── style.css      # Styling and responsive design
 ├── js/
 │   ├── audio.js       # Web Audio API tone generation
-│   ├── test.js        # Test flow and Hughson-Westlake logic
-│   └── audiogram.js   # Canvas-based audiogram chart
+│   ├── speech.js      # Speech recognition test logic
+│   ├── test.js        # Test flow and coordination
+│   ├── audiogram.js   # Canvas-based audiogram chart
+│   └── i18n.js        # Internationalization (English/Hebrew)
 ├── README.md          # This file
 └── LICENSE            # Dual License (Non-Commercial/Commercial)
 ```
 
 ## Technical Details
 
-### Audio Generation
+### Pure Tone Audio Generation
 
 - Uses Web Audio API `OscillatorNode` for pure sine wave generation
 - Implements stereo panning for left/right ear isolation
 - Smooth fade in/out to prevent clicking artifacts
 - Approximate dB HL to gain conversion (not calibrated)
+- Random inter-tone intervals (1-3 seconds) to prevent anticipation
+
+### Speech Test Implementation
+
+- Uses Web Speech Synthesis API for word playback
+- 40-word vocabulary per language (English/Hebrew word lists included)
+- Multiple-choice format with 3 distractors per word
+- 8 volume levels from 100% to 10%
+- Adaptive threshold calculation (50% recognition point)
+- Replay option available for each word
 
 ### Audiogram Chart
 
@@ -136,6 +178,13 @@ hearing-test/
 - Left ear: Blue crosses (X)
 - Canvas-based rendering with high DPI support
 
+### Internationalization
+
+- Full bilingual support (English/Hebrew)
+- RTL (right-to-left) layout for Hebrew
+- Speech test currently English-only due to browser TTS limitations
+- All UI elements translated dynamically
+
 ### Limitations
 
 1. **Calibration**: Not calibrated to ISO 389 or ANSI standards
@@ -144,6 +193,8 @@ hearing-test/
 4. **Self-administration**: No audiologist to ensure proper procedure
 5. **Bone conduction**: Only tests air conduction
 6. **Masking**: No contralateral masking for cross-hearing
+7. **Speech Test Language**: Currently English-only due to browser text-to-speech voice availability
+8. **Speech Test Accuracy**: Depends on browser TTS quality and system voices
 
 ## Understanding Your Results
 

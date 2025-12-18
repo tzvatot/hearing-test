@@ -71,6 +71,7 @@ const translations = {
         'testselection.speech.feature2': 'Real-world relevance',
         'testselection.speech.feature3': 'Word recognition',
         'testselection.speech.btn': 'Start Speech Test',
+        'testselection.speech.hebrewnotice': '⚠️ Speech test is only available in English',
         'testselection.both.title': 'Complete Assessment',
         'testselection.both.desc': 'Both pure tone and speech tests for comprehensive hearing evaluation.',
         'testselection.both.badge': 'Recommended',
@@ -78,6 +79,7 @@ const translations = {
         'testselection.both.feature2': 'Most comprehensive',
         'testselection.both.feature3': 'Clinical standard',
         'testselection.both.btn': 'Start Complete Test',
+        'testselection.both.hebrewnotice': '⚠️ Complete assessment includes speech test (English only)',
 
         // Speech test screen
         'speech.title': 'Speech Recognition Test',
@@ -86,6 +88,7 @@ const translations = {
         'speech.listening': '🔊 Listening...',
         'speech.btn.replay': '🔁 Replay Word',
         'speech.replay.hint': 'Click to hear the word again',
+        'speech.warning.novoice': 'Warning: Your browser does not have a voice installed for the selected language. The test will use the default system voice, which may affect accuracy.',
 
         // Test screen
         'test.title': 'Hearing Test in Progress',
@@ -209,6 +212,7 @@ const translations = {
         'testselection.speech.feature2': 'רלוונטיות לעולם האמיתי',
         'testselection.speech.feature3': 'זיהוי מילים',
         'testselection.speech.btn': 'התחל בדיקת דיבור',
+        'testselection.speech.hebrewnotice': '⚠️ בדיקת דיבור זמינה באנגלית בלבד',
         'testselection.both.title': 'הערכה מקיפה',
         'testselection.both.desc': 'שתי בדיקות - צלילים טהורים ודיבור - להערכת שמיעה מקיפה.',
         'testselection.both.badge': 'מומלץ',
@@ -216,6 +220,7 @@ const translations = {
         'testselection.both.feature2': 'הכי מקיף',
         'testselection.both.feature3': 'תקן קליני',
         'testselection.both.btn': 'התחל בדיקה מקיפה',
+        'testselection.both.hebrewnotice': '⚠️ הערכה מקיפה כוללת בדיקת דיבור (אנגלית בלבד)',
 
         // Speech test screen
         'speech.title': 'בדיקת זיהוי דיבור',
@@ -224,6 +229,7 @@ const translations = {
         'speech.listening': '🔊 מאזין...',
         'speech.btn.replay': '🔁 השמע שוב',
         'speech.replay.hint': 'לחץ כדי לשמוע את המילה שוב',
+        'speech.warning.novoice': 'אזהרה: לדפדפן שלך אין קול מותקן בשפה שנבחרה. הבדיקה תשתמש בקול ברירת המחדל של המערכת, מה שעלול להשפיע על הדיוק.',
 
         // Test screen
         'test.title': 'בדיקת שמיעה בתהליך',
@@ -329,6 +335,11 @@ class I18n {
 
         // Update all elements with data-i18n attribute
         this.updateUI();
+
+        // Update test selection if on that screen
+        if (typeof app !== 'undefined' && app.updateTestSelectionForLanguage) {
+            app.updateTestSelectionForLanguage();
+        }
 
         // Update language selector
         const selector = document.getElementById('language-selector');

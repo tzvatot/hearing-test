@@ -268,6 +268,82 @@ class HearingTest {
     // Test selection methods
     showTestSelection() {
         this.showScreen('testSelection');
+
+        // Update UI based on current language
+        this.updateTestSelectionForLanguage();
+    }
+
+    updateTestSelectionForLanguage() {
+        const currentLang = i18n.currentLanguage;
+        const speechCard = document.querySelector('.test-card:nth-child(2)'); // Speech test card
+        const bothCard = document.querySelector('.test-card-recommended'); // Complete test card
+
+        if (currentLang === 'he') {
+            // Disable speech test for Hebrew
+            if (speechCard) {
+                speechCard.classList.add('test-card-disabled');
+                const btn = speechCard.querySelector('.btn-primary');
+                if (btn) {
+                    btn.disabled = true;
+                    btn.style.opacity = '0.5';
+                    btn.style.cursor = 'not-allowed';
+                }
+
+                // Add notice
+                let notice = speechCard.querySelector('.language-notice');
+                if (!notice) {
+                    notice = document.createElement('div');
+                    notice.className = 'language-notice';
+                    notice.innerHTML = i18n.t('testselection.speech.hebrewnotice');
+                    speechCard.querySelector('p').after(notice);
+                }
+            }
+
+            // Disable complete test for Hebrew
+            if (bothCard) {
+                bothCard.classList.add('test-card-disabled');
+                const btn = bothCard.querySelector('.btn-primary');
+                if (btn) {
+                    btn.disabled = true;
+                    btn.style.opacity = '0.5';
+                    btn.style.cursor = 'not-allowed';
+                }
+
+                // Add notice
+                let notice = bothCard.querySelector('.language-notice');
+                if (!notice) {
+                    notice = document.createElement('div');
+                    notice.className = 'language-notice';
+                    notice.innerHTML = i18n.t('testselection.both.hebrewnotice');
+                    bothCard.querySelector('p').after(notice);
+                }
+            }
+        } else {
+            // Enable for English
+            if (speechCard) {
+                speechCard.classList.remove('test-card-disabled');
+                const btn = speechCard.querySelector('.btn-primary');
+                if (btn) {
+                    btn.disabled = false;
+                    btn.style.opacity = '';
+                    btn.style.cursor = '';
+                }
+                const notice = speechCard.querySelector('.language-notice');
+                if (notice) notice.remove();
+            }
+
+            if (bothCard) {
+                bothCard.classList.remove('test-card-disabled');
+                const btn = bothCard.querySelector('.btn-primary');
+                if (btn) {
+                    btn.disabled = false;
+                    btn.style.opacity = '';
+                    btn.style.cursor = '';
+                }
+                const notice = bothCard.querySelector('.language-notice');
+                if (notice) notice.remove();
+            }
+        }
     }
 
     selectTestType(testType) {

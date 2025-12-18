@@ -557,6 +557,23 @@ h4 {
     flex-shrink: 0;
 }
 
+.test-card-disabled {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.language-notice {
+    background: #fff3cd;
+    border: 2px solid #ffc107;
+    border-radius: 8px;
+    padding: 12px;
+    margin: 15px 0;
+    color: #856404;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-align: center;
+}
+
 /* Speech Test Screen */
 .speech-test-content {
     text-align: center;

@@ -104,22 +104,42 @@ class SpeechTest {
         return new Promise((resolve) => {
             const setVoice = () => {
                 const voices = this.synthesis.getVoices();
+                console.log('Available voices:', voices.map(v => `${v.name} (${v.lang})`));
 
-                // Find voice for the language
-                const langCode = language === 'he' ? 'he-IL' : 'en-US';
-                let voice = voices.find(v => v.lang === langCode);
+                // Find voice for the language with multiple patterns
+                let voice = null;
+
+                if (language === 'he') {
+                    // Try various Hebrew locale codes
+                    voice = voices.find(v =>
+                        v.lang === 'he-IL' ||
+                        v.lang === 'he' ||
+                        v.lang.startsWith('he-') ||
+                        v.name.toLowerCase().includes('hebrew')
+                    );
+                } else {
+                    // English
+                    voice = voices.find(v =>
+                        v.lang === 'en-US' ||
+                        v.lang === 'en' ||
+                        v.lang.startsWith('en-')
+                    );
+                }
 
                 // Fallback to any voice in that language
                 if (!voice) {
                     voice = voices.find(v => v.lang.startsWith(language));
                 }
 
-                // Fallback to default voice
+                // Last resort: use default voice
                 if (!voice && voices.length > 0) {
                     voice = voices[0];
+                    console.warn(`No ${language} voice found, using default: ${voice.name} (${voice.lang})`);
                 }
 
                 this.voice = voice;
+                console.log(`Selected voice: ${voice ? voice.name : 'none'} (${voice ? voice.lang : 'none'})`);
+
                 resolve(voice);
             };
 
@@ -143,13 +163,40 @@ class SpeechTest {
             timestamp: new Date().toISOString()
         };
 
+        console.log(`Starting speech test in language: ${language}`);
+
         // Initialize voice
         await this.initVoice(language);
 
+        // Check if we got a voice for the requested language
+        if (this.voice && !this.voice.lang.startsWith(language)) {
+            const languageName = language === 'he' ? 'Hebrew' : 'English';
+            const message = language === 'he'
+                ? `מצטערים! הדפדפן שלך לא תומך בקול עברי.\n\nבדיקת דיבור בעברית לא זמינה במערכת שלך.\nאנא בחר בבדיקת צלילים טהורים במקום זאת, או התקן קול עברי במערכת שלך.\n\nהאם תרצה לחזור למסך בחירת הבדיקה?`
+                : `Sorry! Your browser doesn't have ${languageName} voices installed.\n\nSpeech test is not available in ${languageName}.\nPlease choose Pure Tone Test instead, or install ${languageName} voices on your system.\n\nWould you like to go back to test selection?`;
+
+            if (confirm(message)) {
+                app.showTestSelection();
+                return;
+            } else {
+                // User wants to continue anyway (won't work well but let them try)
+                console.warn('User chose to continue despite voice mismatch');
+            }
+        }
+
         // Select random words from the word list
         const wordList = speechWordLists[language];
+        console.log(`Word list for ${language}:`, wordList ? wordList.slice(0, 5) : 'NOT FOUND');
+
+        if (!wordList || wordList.length === 0) {
+            console.error(`No word list found for language: ${language}`);
+            alert(`Error: No words available for language ${language}`);
+            return;
+        }
+
         const totalWords = this.volumeLevels.length * this.wordsPerLevel;
         this.testWords = this.shuffleArray([...wordList]).slice(0, totalWords);
+        console.log(`Selected ${this.testWords.length} words for test`);
 
         // Start first word
         this.nextWord();
@@ -206,11 +253,14 @@ class SpeechTest {
         // Cancel any ongoing speech
         this.synthesis.cancel();
 
+        console.log(`Speaking word: "${word}" at volume ${volume} using voice: ${this.voice ? this.voice.name : 'default'} (${this.voice ? this.voice.lang : 'unknown'})`);
+
         const utterance = new SpeechSynthesisUtterance(word);
         utterance.voice = this.voice;
         utterance.volume = volume;
         utterance.rate = 0.9; // Slightly slower for clarity
         utterance.pitch = 1.0;
+        utterance.lang = this.currentLanguage === 'he' ? 'he-IL' : 'en-US'; // Explicitly set language
 
         this.synthesis.speak(utterance);
     }
