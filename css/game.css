@@ -1,0 +1,638 @@
+/**
+ * Game Mode Test Styles
+ * Gamified hearing test CSS
+ */
+
+/* ===================================
+   Game Test Screen Layout
+   =================================== */
+
+#game-test-screen.active {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 20px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* ===================================
+   Game Header & Progress
+   =================================== */
+
+.game-header {
+    width: 100%;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.game-header h2 {
+    font-size: 1.8em;
+    margin: 0 0 10px 0;
+    color: #2c3e50;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.game-progress {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+.game-progress span {
+    font-size: 1.1em;
+    color: #34495e;
+}
+
+.game-progress strong {
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+/* ===================================
+   Game Instruction
+   =================================== */
+
+.game-instruction {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 12px;
+    padding: 10px 15px;
+    background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+    border-radius: 10px;
+    border: 2px solid #667eea30;
+}
+
+.game-instruction p {
+    font-size: 1.1em;
+    color: #2c3e50;
+    font-weight: 500;
+    margin: 0;
+}
+
+/* ===================================
+   Game Scene (Background SVG)
+   =================================== */
+
+.game-scene {
+    width: 100%;
+    max-width: 600px;
+    margin-bottom: 15px;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.game-scene-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* ===================================
+   Game Options (3 Buttons)
+   =================================== */
+
+.game-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    width: 100%;
+    max-width: 700px;
+    margin-bottom: 15px;
+}
+
+.game-option-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.game-option-btn {
+    background: white;
+    border: 4px solid #3498db;
+    border-radius: 15px;
+    padding: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    min-height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.game-option-btn:hover:not(:disabled) {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(52, 152, 219, 0.3);
+    border-color: #2980b9;
+}
+
+.game-option-btn:active:not(:disabled) {
+    transform: translateY(-2px);
+}
+
+.game-option-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.game-option-btn.playing-sound {
+    border-color: #f39c12;
+    box-shadow: 0 0 20px rgba(243, 156, 18, 0.6);
+    animation: sound-pulse 0.3s ease-in-out;
+}
+
+.game-option-btn.no-sound {
+    border-color: #95a5a6;
+    animation: subtle-shake 0.3s ease-in-out;
+}
+
+.game-button-svg {
+    width: 100%;
+    height: 100%;
+    max-width: 200px;
+    max-height: 200px;
+}
+
+.game-confirm-btn {
+    padding: 12px 20px;
+    font-size: 1.1em;
+    font-weight: 600;
+    background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(46, 204, 113, 0.3);
+}
+
+.game-confirm-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(46, 204, 113, 0.5);
+}
+
+.game-confirm-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+}
+
+@keyframes sound-pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+@keyframes subtle-shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-3px); }
+    75% { transform: translateX(3px); }
+}
+
+/* ===================================
+   Correct/Incorrect Feedback States
+   =================================== */
+
+.game-option-btn.correct {
+    border-color: #2ecc71;
+    background: linear-gradient(135deg, #2ecc7110 0%, #27ae6015 100%);
+    animation: correct-pulse 0.6s ease-in-out;
+}
+
+.game-option-btn.incorrect {
+    border-color: #e74c3c;
+    background: linear-gradient(135deg, #e74c3c10 0%, #c0392b15 100%);
+    animation: incorrect-shake 0.5s ease-in-out;
+}
+
+@keyframes correct-pulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 4px 10px rgba(46, 204, 113, 0.2);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 8px 25px rgba(46, 204, 113, 0.4);
+    }
+}
+
+@keyframes incorrect-shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+/* ===================================
+   Game Controls
+   =================================== */
+
+.game-controls {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 12px;
+}
+
+#game-help-btn {
+    padding: 12px 40px;
+    font-size: 1.1em;
+    background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(243, 156, 18, 0.3);
+    font-weight: 500;
+}
+
+#game-help-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(243, 156, 18, 0.4);
+}
+
+#game-help-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ===================================
+   Game Feedback Messages
+   =================================== */
+
+.game-feedback {
+    height: 80px;
+    padding: 15px 25px;
+    border-radius: 10px;
+    font-size: 1em;
+    font-weight: 600;
+    text-align: center;
+    transition: all 0.3s ease;
+    max-width: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    line-height: 1.4;
+}
+
+.game-feedback.success {
+    background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+    color: white;
+    animation: slide-up 0.4s ease-out;
+}
+
+.game-feedback.error {
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    color: white;
+    animation: slide-up 0.4s ease-out;
+}
+
+.game-feedback.info {
+    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+    color: white;
+    animation: slide-up 0.4s ease-out;
+}
+
+@keyframes slide-up {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===================================
+   SVG Animations
+   =================================== */
+
+/* Doorbell ringing animation */
+.doorbell-ring {
+    animation: ring 0.5s ease-in-out infinite;
+    transform-origin: center;
+}
+
+@keyframes ring {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-15deg); }
+    75% { transform: rotate(15deg); }
+}
+
+/* Treasure chest glow */
+.treasure-glow {
+    animation: glow-pulse 1s ease-in-out infinite;
+}
+
+@keyframes glow-pulse {
+    0%, 100% {
+        opacity: 1;
+        filter: brightness(1);
+    }
+    50% {
+        opacity: 0.7;
+        filter: brightness(1.3);
+    }
+}
+
+/* Bird singing animation */
+.bird-sing {
+    animation: bounce 0.6s ease-in-out infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+/* Potion bubbles */
+.potion-bubble {
+    animation: bubble-rise 2s ease-in-out infinite;
+}
+
+@keyframes bubble-rise {
+    0% {
+        transform: translateY(0);
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-30px);
+        opacity: 0;
+    }
+}
+
+/* Potion glow effect */
+.potion-glow {
+    animation: potion-glow-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes potion-glow-pulse {
+    0%, 100% {
+        opacity: 0.2;
+        stroke-width: 2;
+    }
+    50% {
+        opacity: 0.5;
+        stroke-width: 3;
+    }
+}
+
+/* Bee buzzing */
+.bee-buzz {
+    animation: buzz-around 2s ease-in-out infinite;
+}
+
+@keyframes buzz-around {
+    0%, 100% { transform: translate(0, 0); }
+    25% { transform: translate(-3px, -3px); }
+    50% { transform: translate(3px, 3px); }
+    75% { transform: translate(-3px, 3px); }
+}
+
+/* Musical notes floating */
+.music-note {
+    animation: float-note 2s ease-in-out infinite;
+}
+
+@keyframes float-note {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-30px);
+        opacity: 0;
+    }
+}
+
+/* Sound waves expanding */
+.sound-wave {
+    animation: wave-expand 1.5s ease-out infinite;
+}
+
+@keyframes wave-expand {
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1.5);
+    }
+}
+
+/* ===================================
+   Responsive Design
+   =================================== */
+
+@media (max-width: 768px) {
+    .game-options {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        max-width: 400px;
+    }
+
+    .game-option-container {
+        gap: 10px;
+    }
+
+    .game-option-btn {
+        min-height: 150px;
+    }
+
+    .game-confirm-btn {
+        padding: 10px 18px;
+        font-size: 1em;
+    }
+
+    .game-header h2 {
+        font-size: 1.6em;
+    }
+
+    .game-instruction p {
+        font-size: 1.1em;
+    }
+
+    .game-controls {
+        width: 100%;
+        max-width: 400px;
+    }
+
+    #game-help-btn {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+
+@media (max-width: 480px) {
+    #game-test-screen.active {
+        padding: 8px 15px;
+    }
+
+    .game-header h2 {
+        font-size: 1.4em;
+        margin-bottom: 8px;
+    }
+
+    .game-instruction p {
+        font-size: 1em;
+    }
+
+    .game-instruction {
+        margin-bottom: 10px;
+        padding: 8px 12px;
+    }
+
+    .game-option-btn {
+        min-height: 120px;
+        padding: 10px;
+    }
+
+    #game-help-btn,
+    .btn-skip {
+        padding: 10px 20px;
+        font-size: 1em;
+    }
+
+    .game-feedback {
+        height: 90px;
+        font-size: 0.9em;
+        padding: 10px 15px;
+    }
+}
+
+/* ===================================
+   RTL Support
+   =================================== */
+
+html[dir="rtl"] .game-options {
+    direction: rtl;
+}
+
+html[dir="rtl"] .game-controls {
+    flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .game-progress {
+    direction: rtl;
+}
+
+/* ===================================
+   Test Matrix
+   =================================== */
+
+.btn-expand-matrix {
+    margin-top: 10px;
+    padding: 8px 16px;
+    font-size: 0.9em;
+    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
+}
+
+.btn-expand-matrix:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
+}
+
+.game-matrix-container {
+    width: 100%;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    margin-bottom: 0;
+}
+
+.game-matrix-container.expanded {
+    max-height: 600px;
+    margin-bottom: 20px;
+    overflow-y: auto;
+}
+
+.matrix-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    background: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    font-size: 0.85em;
+}
+
+.matrix-table thead {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.matrix-table th {
+    padding: 10px 6px;
+    font-weight: 600;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    text-align: center;
+}
+
+.matrix-table td {
+    padding: 8px 6px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+.freq-label {
+    font-weight: 600;
+    background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+    color: #2c3e50;
+}
+
+.matrix-cell {
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.cell-success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.cell-fail {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.cell-unknown {
+    background-color: #f8f9fa;
+    color: #6c757d;
+}
+
+@media (max-width: 768px) {
+    .matrix-table {
+        font-size: 0.7em;
+    }
+
+    .matrix-table th,
+    .matrix-table td {
+        padding: 6px 4px;
+    }
+}
+

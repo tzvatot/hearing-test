@@ -6,6 +6,7 @@
     <title>Hearing Test - Free Online Audiometry</title>
     <meta name="description" content="Free online hearing test - Check your hearing with a self-administered audiometry test">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/game.css">
 </head>
 <body>
     <!-- Language Selector -->
@@ -161,6 +162,18 @@
                     </ul>
                     <button class="btn-primary" onclick="app.selectTestType('both')" data-i18n="testselection.both.btn">Start Complete Test</button>
                 </div>
+
+                <div class="test-card">
+                    <div class="test-card-icon">🎮</div>
+                    <h3 data-i18n="testselection.game.title">Game Mode Test</h3>
+                    <p data-i18n="testselection.game.desc">Fun, interactive hearing test with game scenarios. Same accuracy as pure tone test but more engaging - perfect for kids!</p>
+                    <ul class="test-card-features">
+                        <li data-i18n="testselection.game.feature1">12-18 minutes</li>
+                        <li data-i18n="testselection.game.feature2">6 game scenarios</li>
+                        <li data-i18n="testselection.game.feature3">Multiple validations</li>
+                    </ul>
+                    <button class="btn-primary" onclick="app.selectTestType('gamemode')" data-i18n="testselection.game.btn">Start Game Mode</button>
+                </div>
             </div>
         </div>
 
@@ -204,6 +217,59 @@
                     <p class="hint" data-i18n="speech.replay.hint">Click to hear the word again</p>
                 </div>
             </div>
+        </div>
+
+        <!-- Game Test Screen -->
+        <div id="game-test-screen" class="screen">
+            <div class="game-header">
+                <h2 data-i18n="game.title">Hearing Adventure Game</h2>
+                <div class="game-progress">
+                    <span><span data-i18n="test.testing">Testing</span>: <strong id="game-ear">Right Ear</strong></span>
+                    <span><span data-i18n="test.frequency">Frequency</span>: <strong id="game-frequency">1000 Hz</strong></span>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="game-progress-fill"></div>
+                    </div>
+                    <button class="btn-expand-matrix" id="game-expand-matrix-btn" data-i18n="game.matrix.show">
+                        ▶ Show Test Matrix
+                    </button>
+                </div>
+            </div>
+
+            <!-- Test Matrix Container -->
+            <div class="game-matrix-container" id="game-matrix-container">
+                <div id="game-matrix-table"></div>
+            </div>
+
+            <div class="game-instruction" id="game-instruction">
+                <p data-i18n="game.instruction">Listen carefully and click on the object making sound!</p>
+            </div>
+
+            <div class="game-scene" id="game-scene">
+                <!-- SVG background rendered here -->
+            </div>
+
+            <div class="game-options">
+                <div class="game-option-container">
+                    <button class="game-option-btn" id="game-option-0"></button>
+                    <button class="game-confirm-btn" id="game-confirm-0" data-i18n="game.confirm">This!</button>
+                </div>
+                <div class="game-option-container">
+                    <button class="game-option-btn" id="game-option-1"></button>
+                    <button class="game-confirm-btn" id="game-confirm-1" data-i18n="game.confirm">This!</button>
+                </div>
+                <div class="game-option-container">
+                    <button class="game-option-btn" id="game-option-2"></button>
+                    <button class="game-confirm-btn" id="game-confirm-2" data-i18n="game.confirm">This!</button>
+                </div>
+            </div>
+
+            <div class="game-controls">
+                <button class="btn-secondary" id="game-help-btn" data-i18n="game.idontknow">
+                    I Don't Know / Skip
+                </button>
+            </div>
+
+            <div class="game-feedback" id="game-feedback"></div>
         </div>
 
         <!-- Test Screen -->
@@ -318,6 +384,8 @@
     <script src="js/i18n.js"></script>
     <script src="js/audio.js"></script>
     <script src="js/speech.js"></script>
+    <script src="js/game-scenarios.js"></script>
+    <script src="js/game.js"></script>
     <script src="js/test.js"></script>
     <script src="js/audiogram.js"></script>
 </body>

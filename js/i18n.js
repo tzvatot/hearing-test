@@ -80,6 +80,42 @@ const translations = {
         'testselection.both.feature3': 'Clinical standard',
         'testselection.both.btn': 'Start Complete Test',
         'testselection.both.hebrewnotice': '⚠️ Complete assessment includes speech test (English only)',
+        'testselection.game.title': 'Game Mode Test',
+        'testselection.game.desc': 'Fun, interactive hearing test with game scenarios. Same accuracy as pure tone test but more engaging - perfect for kids!',
+        'testselection.game.feature1': '12-18 minutes',
+        'testselection.game.feature2': '6 game scenarios',
+        'testselection.game.feature3': 'Multiple validations',
+        'testselection.game.btn': 'Start Game Mode',
+
+        // Game mode test
+        'game.title': 'Hearing Adventure Game',
+        'game.instruction': 'Listen carefully and click on the object making sound!',
+        'game.clicktotest': '👆 Click on the tiles to test them, then click "This!" on the one that makes sound',
+        'game.confirm': 'This!',
+        'game.idontknow': 'I Don\'t Know / Skip',
+        'game.listening': '👂 Listening...',
+        'game.feedback.correct': '🎉 Correct! Great job!',
+        'game.feedback.incorrect': '❌ Not quite. Let\'s try again!',
+        'game.feedback.louder': '🔊 Making it a bit louder...',
+        'game.feedback.skipping': '⏭️ Skipping to next frequency...',
+
+        // Game scenarios
+        'game.scenario.dog.title': 'Find the Ringing Doorbell',
+        'game.scenario.dog.instruction': 'Help the dog find which doghouse has the doorbell ringing!',
+        'game.scenario.treasure.title': 'Musical Treasure Chest',
+        'game.scenario.treasure.instruction': 'Which treasure chest is playing music?',
+        'game.scenario.bird.title': 'Singing Bird Nest',
+        'game.scenario.bird.instruction': 'Which tree has the singing bird?',
+        'game.scenario.potion.title': 'Bubbling Magic Potion',
+        'game.scenario.potion.instruction': 'Which potion bottle is bubbling?',
+        'game.scenario.flower.title': 'Humming Flower Garden',
+        'game.scenario.flower.instruction': 'Which flower is humming with bees?',
+        'game.scenario.instrument.title': 'Musical Instruments',
+        'game.scenario.instrument.instruction': 'Which instrument is playing?',
+
+        // Game test matrix
+        'game.matrix.show': 'Show Test Matrix',
+        'game.matrix.hide': 'Hide Test Matrix',
 
         // Speech test screen
         'speech.title': 'Speech Recognition Test',
@@ -221,6 +257,42 @@ const translations = {
         'testselection.both.feature3': 'תקן קליני',
         'testselection.both.btn': 'התחל בדיקה מקיפה',
         'testselection.both.hebrewnotice': '⚠️ הערכה מקיפה כוללת בדיקת דיבור (אנגלית בלבד)',
+        'testselection.game.title': 'מצב משחק',
+        'testselection.game.desc': 'בדיקת שמיעה אינטראקטיבית ומהנה עם תרחישי משחק. אותה דיוק כמו בדיקת צלילים טהורים אך יותר מרתק - מושלם לילדים!',
+        'testselection.game.feature1': '12-18 דקות',
+        'testselection.game.feature2': '6 תרחישי משחק',
+        'testselection.game.feature3': 'אימותים מרובים',
+        'testselection.game.btn': 'התחל מצב משחק',
+
+        // Game mode test
+        'game.title': 'משחק הרפתקאות שמיעה',
+        'game.instruction': 'הקשב היטב ולחץ על החפץ שמשמיע קול!',
+        'game.clicktotest': '👆 לחץ על האריחים כדי לבדוק אותם, ואז לחץ על "זה!" על זה שמשמיע קול',
+        'game.confirm': 'זה!',
+        'game.idontknow': 'אני לא יודע / דלג',
+        'game.listening': '👂 מקשיב...',
+        'game.feedback.correct': '🎉 נכון! עבודה מצוינת!',
+        'game.feedback.incorrect': '❌ לא בדיוק. בוא ננסה שוב!',
+        'game.feedback.louder': '🔊 הופך קצת יותר חזק...',
+        'game.feedback.skipping': '⏭️ מדלג לתדר הבא...',
+
+        // Game scenarios
+        'game.scenario.dog.title': 'מצא את הפעמון המצלצל',
+        'game.scenario.dog.instruction': 'עזור לכלב למצוא איזה בית כלב יש בו פעמון מצלצל!',
+        'game.scenario.treasure.title': 'תיבת אוצר מוזיקלית',
+        'game.scenario.treasure.instruction': 'איזו תיבת אוצר מנגנת מוזיקה?',
+        'game.scenario.bird.title': 'קן ציפור מצייצת',
+        'game.scenario.bird.instruction': 'באיזה עץ יש את הציפור המצייצת?',
+        'game.scenario.potion.title': 'שיקוי קסם מבעבע',
+        'game.scenario.potion.instruction': 'איזה בקבוק שיקוי מבעבע?',
+        'game.scenario.flower.title': 'גן פרחים מזמזם',
+        'game.scenario.flower.instruction': 'איזה פרח מזמזם עם דבורים?',
+        'game.scenario.instrument.title': 'כלי נגינה',
+        'game.scenario.instrument.instruction': 'איזה כלי נגינה מנגן?',
+
+        // Game test matrix
+        'game.matrix.show': 'הצג מטריצת בדיקה',
+        'game.matrix.hide': 'הסתר מטריצת בדיקה',
 
         // Speech test screen
         'speech.title': 'בדיקת זיהוי דיבור',
@@ -339,6 +411,11 @@ class I18n {
         // Update test selection if on that screen
         if (typeof app !== 'undefined' && app.updateTestSelectionForLanguage) {
             app.updateTestSelectionForLanguage();
+        }
+
+        // Update game test screen if active
+        if (typeof gameTest !== 'undefined' && gameTest.updateLanguage) {
+            gameTest.updateLanguage();
         }
 
         // Update language selector

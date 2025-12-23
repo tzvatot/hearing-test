@@ -72,6 +72,7 @@ class HearingTest {
             tutorial: document.getElementById('tutorial-screen'),
             testSelection: document.getElementById('test-selection-screen'),
             speechTest: document.getElementById('speech-test-screen'),
+            gameTest: document.getElementById('game-test-screen'),
             test: document.getElementById('test-screen'),
             results: document.getElementById('results-screen')
         };
@@ -357,6 +358,9 @@ class HearingTest {
         } else if (testType === 'speech') {
             // Skip tutorial for speech-only test
             this.startSpeechTest();
+        } else if (testType === 'gamemode') {
+            // Start game mode test
+            this.startGameTest();
         }
     }
 
@@ -372,6 +376,26 @@ class HearingTest {
 
         // Start the speech test
         await speechTest.startTest(currentLang);
+    }
+
+    // Start game mode test
+    async startGameTest() {
+        this.showScreen('gameTest');
+
+        // Initialize game test UI
+        gameTest.initUI();
+
+        // Start the game test
+        await gameTest.startTest();
+    }
+
+    // Show game test results
+    showGameResults(results) {
+        this.allResults.gamemode = results;
+        this.completedTests.push('gamemode');
+
+        // Show final results
+        this.showResults();
     }
 
     // Show speech test results
@@ -680,9 +704,11 @@ class HearingTest {
         const puretoneSec = document.getElementById('puretone-results');
         const speechSec = document.getElementById('speech-results');
 
-        if (this.allResults.puretone) {
+        // Game mode uses same audiogram as pure tone
+        if (this.allResults.puretone || this.allResults.gamemode) {
             if (puretoneSec) puretoneSec.classList.remove('hidden');
-            drawAudiogram(this.allResults.puretone);
+            const resultsToShow = this.allResults.puretone || this.allResults.gamemode;
+            drawAudiogram(resultsToShow);
         } else {
             if (puretoneSec) puretoneSec.classList.add('hidden');
         }
