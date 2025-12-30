@@ -171,6 +171,7 @@ const translations = {
         'results.reminder.title': 'Remember:',
         'results.reminder.text': 'This test is not calibrated to medical standards. If you have concerns about your hearing, please consult a licensed audiologist.',
         'results.btn.save': 'Save Results (PNG)',
+        'results.btn.savecsv': 'Download CSV',
         'results.btn.print': 'Print',
         'results.btn.restart': 'Take Test Again',
 
@@ -348,6 +349,7 @@ const translations = {
         'results.reminder.title': 'זכרו:',
         'results.reminder.text': 'בדיקה זו אינה מכוילת לסטנדרטים רפואיים. אם יש לכם חששות לגבי השמיעה שלכם, אנא התייעצו עם אודיולוג מוסמך.',
         'results.btn.save': 'שמור תוצאות (PNG)',
+        'results.btn.savecsv': 'הורד CSV',
         'results.btn.print': 'הדפס',
         'results.btn.restart': 'בצע בדיקה שוב',
 

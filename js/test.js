@@ -768,6 +768,71 @@ class HearingTest {
         link.click();
     }
 
+    // Save results as CSV
+    saveResultsCSV() {
+        const puretoneResults = this.allResults.puretone || this.allResults.gamemode;
+        const speechResults = this.allResults.speech;
+
+        if (!puretoneResults && !speechResults) {
+            console.error('No results to export');
+            return;
+        }
+
+        let csvContent = '';
+        const timestamp = new Date().toISOString().split('T')[0];
+
+        // Export Pure Tone / Game Mode results
+        if (puretoneResults) {
+            const frequencies = [250, 500, 1000, 2000, 3000, 4000, 6000, 8000];
+
+            csvContent += 'Pure Tone Audiogram\n';
+            csvContent += 'Frequency (Hz),Right Ear (dB HL),Left Ear (dB HL)\n';
+
+            frequencies.forEach(freq => {
+                const rightValue = puretoneResults.right[freq];
+                const leftValue = puretoneResults.left[freq];
+
+                const rightDisplay = (rightValue === undefined || rightValue > 100) ? 'SKIP' : rightValue;
+                const leftDisplay = (leftValue === undefined || leftValue > 100) ? 'SKIP' : leftValue;
+
+                csvContent += `${freq},${rightDisplay},${leftDisplay}\n`;
+            });
+        }
+
+        // Export Speech Recognition results
+        if (speechResults) {
+            if (csvContent) csvContent += '\n'; // Add separator if we have pure tone results
+
+            csvContent += 'Speech Recognition Test\n';
+            csvContent += `Speech Recognition Threshold,${speechResults.threshold}%\n\n`;
+            csvContent += 'Volume Level (%),Correct,Total,Accuracy (%)\n';
+
+            // Sort volumes descending
+            const volumes = Object.keys(speechResults.byVolume)
+                .map(Number)
+                .sort((a, b) => b - a);
+
+            volumes.forEach(volume => {
+                const data = speechResults.byVolume[volume];
+                const accuracy = ((data.correct / data.total) * 100).toFixed(1);
+                csvContent += `${volume},${data.correct},${data.total},${accuracy}\n`;
+            });
+        }
+
+        // Create blob and download
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+
+        link.setAttribute('href', url);
+        link.setAttribute('download', `hearing-test-${timestamp}.csv`);
+        link.style.visibility = 'hidden';
+
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
     // Print results
     printResults() {
         window.print();
